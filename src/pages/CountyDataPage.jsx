@@ -5,14 +5,14 @@ import CountyData from '../components/CountyData';
 
 export default function CountyDataPage() {
   return (
-    <div className="main-container">
-      <header>
+    <div className="flex flex-col h-screen ">
+      <header className="h-14 bg-ipam-s-green flex items-center justify-center">
         <Header />
       </header>
-      <main className="container">
+      <main className="h-full bg-ipam-l-brown">
         <CountyData />
       </main>
-      <footer>
+      <footer className="bg-ipam-s-green">
         <Footer />
       </footer>
     </div>
