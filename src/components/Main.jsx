@@ -36,6 +36,7 @@ export default function Main() {
       dispatch(setCounty(counties[0].nome));
     }
   }, [state, counties]);
+
   return (
     <>
       <select name="state" id="state" onChange={handleChange}>
@@ -48,15 +49,19 @@ export default function Main() {
           ))
         }
       </select>
-      <select name="county" id="" onChange={handleChange} disabled={!state}>
-        <option value="" selected disabled>Selecione um municipio</option>
-        {
+      {
+        state && (
+
+        <select name="county" id="" onChange={handleChange} disabled={!state}>
+          {
           !fetchingCounties && counties.map(({ id, nome }) => (
             <option key={id} id={id} value={nome}>{nome}</option>
           ))
         }
-      </select>
-      <button type="button" onClick={() => history(`/${county}`)}>Buscar</button>
+        </select>
+        )
+      }
+      <button type="button" disabled={!(state && county)} onClick={() => history(`/${county}`)}>Buscar</button>
     </>
   );
 }
