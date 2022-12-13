@@ -5,9 +5,6 @@ const initialState = {
   states: [],
   counties: [],
   countyData: [],
-  fetchingStates: true,
-  fetchingCounties: true,
-  fetichingCountyData: true,
 };
 
 const apiSlice = createSlice({
@@ -21,7 +18,7 @@ const apiSlice = createSlice({
       return { ...state, counties: payload, fetchingCounties: false };
     },
     setCountyData(state, { payload }) {
-      return { ...state, countyData: payload, fetichingCountyData: false };
+      return { ...state, countyData: payload, fetchingCountyData: false };
     },
   },
 });
