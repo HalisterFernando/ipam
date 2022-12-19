@@ -12,7 +12,6 @@ export default function Main() {
   } = useSelector(allStatesAndCounties);
 
   const { state, county } = useSelector(selectedStateAndCounty);
-
   const dispatch = useDispatch();
 
   const dispatchObj = {
@@ -23,7 +22,9 @@ export default function Main() {
   const handleChange = ({ target: { name, value } }) => dispatchObj[name](value);
 
   useEffect(() => {
-    dispatch(fetchStates());
+    if (!states.length) {
+      dispatch(fetchStates());
+    }
   }, []);
 
   useEffect(() => {
