@@ -9,6 +9,18 @@ export default function CountyData() {
   const { county } = useSelector(selectedStateAndCounty);
   const { id: countyId } = counties.find(({ nome }) => nome === county);
 
+  const ufNome = countyData.length && countyData[0].municipio.microrregiao.mesorregiao.UF.nome;
+  const ufSigla = countyData.length && countyData[0].municipio.microrregiao.mesorregiao.UF.sigla;
+
+  const regiaoNome = countyData.length
+  && countyData[0].municipio.microrregiao.mesorregiao.UF.regiao.nome;
+
+  const regiaoSigla = countyData.length
+  && countyData[0].municipio.microrregiao.mesorregiao.UF.regiao.sigla;
+
+  const microNome = countyData.length && countyData[0].municipio.microrregiao.nome;
+  const mesoNome = countyData.length && countyData[0].municipio.microrregiao.mesorregiao.nome;
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -43,35 +55,43 @@ export default function CountyData() {
             <p>
               <strong>UF:</strong>
               {' '}
-              {countyData[0].municipio.microrregiao.mesorregiao.UF.nome}
+              {ufNome}
               {' '}
               -
               {' '}
-              {countyData[0].municipio.microrregiao.mesorregiao.UF.sigla}
+              {ufSigla}
             </p>
             <p>
               <strong>Região:</strong>
               {' '}
-              {countyData[0].municipio.microrregiao.mesorregiao.UF.regiao.nome}
+              {regiaoNome}
               {' '}
               -
               {' '}
-              {countyData[0].municipio.microrregiao.mesorregiao.UF.regiao.sigla}
+              {regiaoSigla}
             </p>
             <p>
               <strong>Microrregião:</strong>
               {' '}
-              {countyData[0].municipio.microrregiao.nome}
+              {microNome}
             </p>
             <p>
               <strong>Mesorregião:</strong>
               {' '}
-              {countyData[0].municipio.microrregiao.mesorregiao.nome}
+              {mesoNome}
             </p>
           </>
         )
       }
-        <img className="h-36 drop-shadow-[5px_10px_5px_rgba(0,0,0,0.85)] mx-auto" src={Images[countyData.length ? countyData[0].municipio.microrregiao.mesorregiao.UF.regiao.nome : null]} alt="" />
+        <img
+          className="
+            h-36
+            drop-shadow-[5px_10px_5px_rgba(0,0,0,0.85)]
+            mx-auto
+            "
+          src={Images[regiaoNome]}
+          alt={`Mapa da região ${regiaoNome}`}
+        />
       </div>
       <h1 className="text-center text-xl my-4 font-bold bg-ipam-l-green">Distritos</h1>
       <ul className="text-center">
@@ -79,7 +99,7 @@ export default function CountyData() {
         {
 
         countyData.length && countyData.map(({ nome, id }) => (
-          // console.log(data.municipio.microrregiao.nome)
+
           <li key={id} className="font-medium">{nome}</li>
 
         ))
