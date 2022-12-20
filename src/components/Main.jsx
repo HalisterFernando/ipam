@@ -34,10 +34,22 @@ export default function Main() {
   }, [state]);
 
   useEffect(() => {
-    if (state && counties.length) {
+    if (states.length && counties.length) {
       dispatch(setCounty(counties[0].nome));
     }
-  }, [state, counties]);
+  }, [states, counties]);
+
+  useEffect(() => {
+    if (states.length) {
+      dispatch(setState(states[0].sigla));
+    }
+  }, [states]);
+
+  useEffect(() => {
+    if (states.length) {
+      dispatch(fetchCounties(states[0].sigla));
+    }
+  }, [states]);
 
   return (
     <div
@@ -53,47 +65,51 @@ export default function Main() {
       "
     >
       <img className="h-60 drop-shadow-[5px_10px_5px_rgba(0,0,0,0.85)]" src={BrasMap} alt="Mapa do Brasil" />
-      <select
-        className="
-        w-full
-        shadow-sm
-      shadow-black
-        rounded p-2
-        "
-        name="state"
-        id="state"
-        onChange={handleChange}
-      >
-        <option value="" selected disabled>Selecione um estado</option>
-        {
+      <label htmlFor="state">
+        <span className="font-semibold">Selecione um estado:</span>
+        <select
+          className="
+          w-full
+          shadow-sm
+        shadow-black
+          rounded p-2
+          "
+          name="state"
+          id="state"
+          onChange={handleChange}
+        >
+          {
           !fetchingStates && states.map(({ id, sigla, nome }) => (
             <option key={id} value={sigla}>
               {nome}
             </option>
           ))
         }
-      </select>
+        </select>
+      </label>
       {
         state && (
           <>
-            <select
-              className="
-              w-full
-              rounded p-2
-              shadow-sm
-              shadow-black
-              "
-              name="county"
-              id=""
-              onChange={handleChange}
-              disabled={!state}
-            >
-              {
+            <label htmlFor="county">
+              <span className="font-semibold">Selecione um município:</span>
+              <select
+                className="
+                w-full
+                rounded p-2
+                shadow-sm
+                shadow-black
+                "
+                name="county"
+                id=""
+                onChange={handleChange}
+              >
+                {
           !fetchingCounties && counties.map(({ id, nome }) => (
             <option key={id} id={id} value={nome}>{nome}</option>
           ))
         }
-            </select>
+              </select>
+            </label>
             <button
               className="
               w-1/2
@@ -106,7 +122,6 @@ export default function Main() {
               font-semibold
               "
               type="button"
-              disabled={!(state && county)}
               onClick={() => history(`/${county}`)}
             >
               Buscar
