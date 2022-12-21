@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { allStatesAndCounties, fetchCounties, fetchStates } from '../redux/features/apiSlice';
 import { setState, setCounty, selectedStateAndCounty } from '../redux/features/statesCountySlice';
 import BrasMap from '../images/brasil.png';
+import Loading from './Loading';
 
 export default function Main() {
   const history = useNavigate();
@@ -12,6 +13,7 @@ export default function Main() {
   } = useSelector(allStatesAndCounties);
 
   const { state, county } = useSelector(selectedStateAndCounty);
+  const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
 
   const dispatchObj = {
@@ -19,37 +21,44 @@ export default function Main() {
     county: (value) => dispatch(setCounty(value)),
   };
 
-  const handleChange = ({ target: { name, value } }) => dispatchObj[name](value);
+  const handleChange = ({ target: { name, value } }) => {
+    dispatchObj[name](value);
+  };
 
   useEffect(() => {
+    // Verifica lista de estados para não realizar requisição novamente
     if (!states.length) {
       dispatch(fetchStates());
     }
   }, []);
 
   useEffect(() => {
-    if (state) {
-      dispatch(fetchCounties(state));
-    }
-  }, [state]);
-
-  useEffect(() => {
-    if (states.length && counties.length) {
-      dispatch(setCounty(counties[0].nome));
-    }
-  }, [states, counties]);
-
-  useEffect(() => {
+    // Caso lista de estados exista, set no redux o primeiro valor da lista
     if (states.length) {
       dispatch(setState(states[0].sigla));
     }
   }, [states]);
 
   useEffect(() => {
-    if (states.length) {
-      dispatch(fetchCounties(states[0].sigla));
+    // Caso lista de municipios exista, set no redux primeiro valor da lista
+    if (counties.length) {
+      dispatch(setCounty(counties[0].nome));
     }
-  }, [states]);
+  }, [counties]);
+
+  useEffect(() => {
+    // Caso estado no redux exista, faça a requisição de municípios
+    if (state) {
+      dispatch(fetchCounties(state));
+    }
+  }, [state]);
+
+  useEffect(() => {
+    const oneSecond = 1000;
+    setTimeout(() => {
+      setLoading(false);
+    }, oneSecond);
+  }, []);
 
   return (
     <div
@@ -64,32 +73,33 @@ export default function Main() {
       mx-auto
       "
     >
-      <img className="h-60 drop-shadow-[5px_10px_5px_rgba(0,0,0,0.85)]" src={BrasMap} alt="Mapa do Brasil" />
-      <label htmlFor="state">
-        <span className="font-semibold">Selecione um estado:</span>
-        <select
-          className="
-          w-full
-          shadow-sm
-        shadow-black
-          rounded p-2
-          "
-          name="state"
-          id="state"
-          onChange={handleChange}
-        >
-          {
+      {
+        loading ? <Loading /> : (
+          <>
+            <img className="h-60 drop-shadow-[5px_10px_5px_rgba(0,0,0,0.85)]" src={BrasMap} alt="Mapa do Brasil" />
+            <label htmlFor="state">
+              <span className="font-semibold">Selecione um estado:</span>
+              <select
+                className="
+                w-full
+                shadow-sm
+              shadow-black
+                rounded p-2
+                "
+                name="state"
+                id="state"
+                onChange={handleChange}
+              >
+                {
           !fetchingStates && states.map(({ id, sigla, nome }) => (
             <option key={id} value={sigla}>
               {nome}
             </option>
           ))
         }
-        </select>
-      </label>
-      {
-        state && (
-          <>
+              </select>
+            </label>
+
             <label htmlFor="county">
               <span className="font-semibold">Selecione um município:</span>
               <select
@@ -129,6 +139,7 @@ export default function Main() {
           </>
         )
       }
+
     </div>
   );
 }
