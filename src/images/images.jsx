@@ -9,5 +9,5 @@ export default {
   Sul,
   Nordeste,
   Sudeste,
-  CentroOeste,
+  'Centro-Oeste': CentroOeste,
 };
