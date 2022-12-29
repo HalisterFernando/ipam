@@ -41,15 +41,20 @@ export default function CountyData() {
         w-11/12
         mx-auto
         bg-ipam-l-green
+        md:flex
+        md:justify-evenly
+        md:items-center
       "
       >
-        <h2>
-          <strong>Município:</strong>
-          {' '}
-          {county}
-        </h2>
+        <div>
 
-        {
+          <h2>
+            <strong>Município:</strong>
+            {' '}
+            {county}
+          </h2>
+
+          {
         countyData.length && (
           <>
             <p>
@@ -83,11 +88,14 @@ export default function CountyData() {
           </>
         )
       }
+        </div>
         <img
           className="
             h-36
             drop-shadow-[5px_10px_5px_rgba(0,0,0,0.85)]
             mx-auto
+            md:m-0
+            md:h-44
             "
           src={Images[regiaoNome]}
           alt={`Mapa da região ${regiaoNome}`}
@@ -95,7 +103,6 @@ export default function CountyData() {
       </div>
       <h1 className="text-center text-xl my-4 font-bold bg-ipam-l-green">Distritos</h1>
       <ul className="text-center">
-
         {
 
         countyData.length && countyData.map(({ nome, id }) => (
