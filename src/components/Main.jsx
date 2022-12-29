@@ -5,16 +5,23 @@ import { allStatesAndCounties, fetchCounties, fetchStates } from '../redux/featu
 import { setState, setCounty, selectedStateAndCounty } from '../redux/features/statesCountySlice';
 import BrasMap from '../images/brasil.png';
 import Loading from './Loading';
+import useSessionStorage from '../hooks/UseSessionStorage';
 
 export default function Main() {
   const history = useNavigate();
+  const dispatch = useDispatch();
+
+  const { sendToSessionStorage, getFromSessionStorage } = useSessionStorage();
+  const { state, county } = useSelector(selectedStateAndCounty);
   const {
     states, counties, fetchingStates, fetchingCounties,
   } = useSelector(allStatesAndCounties);
 
-  const { state, county } = useSelector(selectedStateAndCounty);
   const [loading, setLoading] = useState(true);
-  const dispatch = useDispatch();
+
+  const dataFromSessionStorage = getFromSessionStorage('data');
+  const selectedState = dataFromSessionStorage
+  && states.find(({ sigla }) => dataFromSessionStorage.state === sigla);
 
   const dispatchObj = {
     state: (value) => dispatch(setState(value)),
@@ -26,6 +33,13 @@ export default function Main() {
   };
 
   useEffect(() => {
+    // Envia as informações para o localStorage
+    if (state && county) {
+      sendToSessionStorage('data', { state, county });
+    }
+  }, [state, county]);
+
+  useEffect(() => {
     // Verifica lista de estados para não realizar requisição novamente
     if (!states.length) {
       dispatch(fetchStates());
@@ -34,7 +48,10 @@ export default function Main() {
 
   useEffect(() => {
     // Caso lista de estados exista, set no redux o primeiro valor da lista
-    if (states.length) {
+    // Caso haja informações no localStorage, set o no redux o valor do estado
+    if (dataFromSessionStorage) {
+      dispatch(setState(dataFromSessionStorage.state));
+    } else if (states.length) {
       dispatch(setState(states[0].sigla));
     }
   }, [states]);
@@ -90,6 +107,13 @@ export default function Main() {
                 id="state"
                 onChange={handleChange}
               >
+
+                {
+                  // Caso o usuário queira realizar outra busca,
+                  // mantem o mesmo nome do estado anterior
+                  selectedState
+                  && (<option value={selectedState.sigla}>{selectedState.nome}</option>)
+                }
                 {
           !fetchingStates && states.map(({ id, sigla, nome }) => (
             <option key={id} value={sigla}>
