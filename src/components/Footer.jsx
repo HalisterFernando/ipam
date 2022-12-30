@@ -1,28 +1,42 @@
 import React from 'react';
-import { BsArrowLeftCircle } from 'react-icons/bs';
 import { useNavigate } from 'react-router-dom';
 
 export default function Footer() {
   const isLocationHome = window.location.href.includes('home');
   const history = useNavigate();
   return (
-    <footer className="flex justify-center items-center py-2">
+    <div>
       {
-        !isLocationHome && (
-        <button
-          type="button"
-          className="flex flex-col items-center text-lg font-semibold"
-          onClick={() => history('/home')}
-        >
-          <i className="text-3xl">
-            {' '}
-            <BsArrowLeftCircle />
-            {' '}
-          </i>
-          Realizar nova pesquisa
-        </button>
+        !isLocationHome ? (
+          <button
+            type="button"
+            className="
+            flex
+            flex-col
+            items-center
+            text-base
+            font-semibold
+            rounded
+            shadow-sm
+            shadow-ipam-cream
+            mb-1
+            px-3
+            py-1
+            bg-ipam-l-green
+            "
+            onClick={() => history('/home')}
+          >
+
+            Realizar nova pesquisa
+          </button>
         )
+          : (
+
+            <span className="text-white">Desenvolvido por Halister Fernando dos Santos</span>
+
+          )
+
       }
-    </footer>
+    </div>
   );
 }
