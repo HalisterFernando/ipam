@@ -94,7 +94,7 @@ export default function Main() {
         loading ? <Loading /> : (
           <>
             <img className="h-60 drop-shadow-[5px_10px_5px_rgba(0,0,0,0.85)]" src={BrasMap} alt="Mapa do Brasil" />
-            <label htmlFor="state" className="max-w-[339px]">
+            <label htmlFor="state" className="max-w-[339px] min-w-[339px]">
               <span className="font-semibold">Selecione um estado:</span>
               <select
                 className="
@@ -124,7 +124,7 @@ export default function Main() {
               </select>
             </label>
 
-            <label htmlFor="county" className="max-w-[339px]">
+            <label htmlFor="county" className="max-w-[339px] min-w-[339px]">
               <span className="font-semibold">Selecione um município:</span>
               <select
                 className="
