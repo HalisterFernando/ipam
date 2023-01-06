@@ -33,7 +33,7 @@ export default function Main() {
   };
 
   useEffect(() => {
-    // Envia as informações para o localStorage
+    // Envia as informações para o sessionStorage
     if (state && county) {
       sendToSessionStorage('data', { state, county });
     }
@@ -48,7 +48,7 @@ export default function Main() {
 
   useEffect(() => {
     // Caso lista de estados exista, set no redux o primeiro valor da lista
-    // Caso haja informações no localStorage, set o no redux o valor do estado
+    // Caso haja informações no sessionStorage, set o no redux o valor do estado
     if (dataFromSessionStorage) {
       dispatch(setState(dataFromSessionStorage.state));
     } else if (states.length) {
