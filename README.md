@@ -15,7 +15,7 @@ Esta aplicação lista todos os distritos do município de acordo com o estado e
 * TailwindCSS
 * Redux-toolkit
 
-## Instalando Dependências e Iniciando a Aplicação
+## Instalando dependências e iniciando a aplicação :rocket:
 
 ```bash
 cd ipam/npm install
