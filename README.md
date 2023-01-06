@@ -1,6 +1,6 @@
 # MAPI :deciduous_tree:
 
-Este projeto foi um teste tecnico da empresa [IPAM](https://ipam.org.br/pt/)
+Este projeto foi um teste tecnico da empresa [IPAM](https://ipam.org.br/pt/), foi desenvolvido mobile-first implementando responsividade para telas maiores 
 
 
 ## Descrição :mag_right:
